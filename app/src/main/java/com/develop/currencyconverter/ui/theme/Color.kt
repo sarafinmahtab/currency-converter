@@ -2,9 +2,30 @@ package com.develop.currencyconverter.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
-val BLACK = Color(0xFF000000)
-val WHITE = Color(0xFFFFFFFF)
+/**
+ * @author Shamsul Arafin Mahtab
+ * @since 28/07/21
+ */
+
+val ColorPrimaryLight = Color.White
+val ColorPrimaryVariantLight = Color.LightGray
+val ColorOnPrimaryLight = Color.Black
+val ColorSecondaryLight = Color(0xFF2196F3)
+val ColorSecondaryVariantLight = Color(0xFF3F51B5)
+val ColorOnSecondaryLight = Color.White
+val ColorSurfaceLight = Color.White
+val ColorOnSurfaceLight = Color.Black
+val ColorBackgroundLight = Color.White
+val ColorOnBackgroundLight = Color.Black
+
+
+val ColorPrimaryDark = Color(0xFF3D3D3D)
+val ColorPrimaryVariantDark = Color.DarkGray
+val ColorOnPrimaryDark = Color.White
+val ColorSecondaryDark = Color(0xFF2196F3)
+val ColorSecondaryVariantDark = Color(0xFF3F51B5)
+val ColorOnSecondaryDark = Color.White
+val ColorSurfaceDark = Color(0xFF545454)
+val ColorOnSurfaceDark = Color.White
+val ColorBackgroundDark = Color(0xFF3D3D3D)
+val ColorOnBackgroundDark = Color.White
