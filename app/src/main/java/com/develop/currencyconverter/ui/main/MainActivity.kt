@@ -8,15 +8,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.android.core.helpers.Results
 import com.develop.currencyconverter.R
+import com.develop.currencyconverter.model.CurrencyConversionResult
 import com.develop.currencyconverter.ui.theme.CurrencyConverterTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,23 +38,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CurrencyConverterTheme {
-                CurrencyConverterHomePage()
+                CurrencyConverterHomePage(viewModel)
             }
         }
+
+        viewModel.convertCurrency("USD", "BDT", 1.0)
     }
 }
 
-private fun showMessage(context: Context) {
-    Toast.makeText(
-        context,
-        "Hello Compose Click",
-        Toast.LENGTH_LONG
-    ).show()
+private fun showToastMessage(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }
 
 @Composable
-fun CurrencyConverterHomePage() {
+fun CurrencyConverterHomePage(viewModel: MainViewModel) {
     val context = LocalContext.current
+    val convertedCurrencyState = viewModel.convertedCurrencyResult.observeAsState()
 
     // Remember a SystemUiController
     val systemUiController = rememberSystemUiController()
@@ -104,28 +102,48 @@ fun CurrencyConverterHomePage() {
                                     radius = Dp(24f)
                                 ), // You can also change the color and radius of the ripple
                             ) {
-                                showMessage(context)
+                                showToastMessage(context, "Hello Compose Click")
                             }
                     )
                 }
             )
-            GreetingText("Compose World")
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (convertedCurrencyState.value != null) {
+                    GreetingText(context, convertedCurrencyState.value!!)
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.sizeIn(
+                            maxWidth = Dp(30f),
+                            maxHeight = Dp(30f)
+                        ),
+                        color = MaterialTheme.colors.secondaryVariant,
+                        strokeWidth = Dp(2.5f)
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-fun GreetingText(name: String) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Hello $name!",
-            color = MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.body1
-        )
+fun GreetingText(context: Context, currencyConversionResult: Results<CurrencyConversionResult>) {
+    when (currencyConversionResult) {
+        is Results.Failure -> {
+            showToastMessage(context, currencyConversionResult.throwable.toString())
+        }
+        is Results.Success -> {
+            val convertedCurrencyResponse: String = Gson().toJson(currencyConversionResult.value)
+            Text(
+                text = convertedCurrencyResponse,
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.body1
+            )
+        }
     }
 }
 
@@ -133,6 +151,6 @@ fun GreetingText(name: String) {
 @Composable
 fun DefaultPreview() {
     CurrencyConverterTheme {
-        CurrencyConverterHomePage()
+//        CurrencyConverterHomePage()
     }
 }

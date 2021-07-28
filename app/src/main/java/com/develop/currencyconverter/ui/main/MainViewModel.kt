@@ -21,9 +21,8 @@ class MainViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    private val _currencyConversionResult = MutableLiveData<Results<CurrencyConversionResult>>()
-    val currencyConversionResult: LiveData<Results<CurrencyConversionResult>> =
-        _currencyConversionResult
+    private val _convertedCurrencyResult = MutableLiveData<Results<CurrencyConversionResult>>()
+    val convertedCurrencyResult: LiveData<Results<CurrencyConversionResult>> = _convertedCurrencyResult
 
     fun convertCurrency(
         fromCurrency: String,
@@ -31,9 +30,8 @@ class MainViewModel @Inject constructor(
         amountToConvert: Double
     ) {
         viewModelScope.launch {
-            val result =
-                currencyRepository.convertCurrency(fromCurrency, toCurrency, amountToConvert)
-            _currencyConversionResult.postValue(result)
+            val result = currencyRepository.convertCurrency(fromCurrency, toCurrency, amountToConvert)
+            _convertedCurrencyResult.postValue(result)
         }
     }
 }
