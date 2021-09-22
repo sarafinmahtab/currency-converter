@@ -1,6 +1,8 @@
-package com.develop.currencyconverter.model
+package com.develop.currencyconverter.data.model
 
 import android.os.Parcelable
+import com.develop.currencyconverter.data.AppConstant.defaultAmount
+import com.develop.currencyconverter.data.AppConstant.defaultBaseCurrencyCode
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -9,10 +11,10 @@ import kotlinx.parcelize.Parcelize
 data class CurrencyConversionResult(
     @SerializedName("amount")
     @Expose
-    val amount: String? = null,
+    val amount: String = defaultAmount,
     @SerializedName("base_currency_code")
     @Expose
-    val baseCurrencyCode: String? = null,
+    val baseCurrencyCode: String = defaultBaseCurrencyCode,
     @SerializedName("base_currency_name")
     @Expose
     val baseCurrencyName: String? = null,

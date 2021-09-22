@@ -1,7 +1,7 @@
 package com.develop.currencyconverter.data.source.remote
 
 import com.develop.currencyconverter.data.source.CurrencyApiService
-import com.develop.currencyconverter.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyConversionResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

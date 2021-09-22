@@ -1,13 +1,13 @@
 package com.develop.currencyconverter.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.core.helpers.Results
 import com.develop.currencyconverter.data.repository.CurrencyRepository
-import com.develop.currencyconverter.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyConversionResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +21,8 @@ class MainViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    private val _convertedCurrencyResult = MutableLiveData<Results<CurrencyConversionResult>>()
-    val convertedCurrencyResult: LiveData<Results<CurrencyConversionResult>> = _convertedCurrencyResult
+    private val _convertedCurrencyResult = MutableStateFlow(Results.Success(CurrencyConversionResult()))
+    val convertedCurrencyResult: StateFlow<Results<CurrencyConversionResult>> = _convertedCurrencyResult
 
     fun convertCurrency(
         fromCurrency: String,
@@ -30,8 +30,7 @@ class MainViewModel @Inject constructor(
         amountToConvert: Double
     ) {
         viewModelScope.launch {
-            val result = currencyRepository.convertCurrency(fromCurrency, toCurrency, amountToConvert)
-            _convertedCurrencyResult.postValue(result)
+
         }
     }
 }

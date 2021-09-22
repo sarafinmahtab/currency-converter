@@ -4,7 +4,7 @@ import com.android.core.helpers.Results
 import com.develop.currencyconverter.data.ServerConstant
 import com.develop.currencyconverter.data.source.remote.RemoteDataSource
 import com.develop.currencyconverter.helper.ResolveApiResponse
-import com.develop.currencyconverter.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyConversionResult
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

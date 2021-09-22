@@ -1,7 +1,7 @@
 package com.develop.currencyconverter.data.source
 
 import com.develop.currencyconverter.data.parameters.CurrencyType
-import com.develop.currencyconverter.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyConversionResult
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query

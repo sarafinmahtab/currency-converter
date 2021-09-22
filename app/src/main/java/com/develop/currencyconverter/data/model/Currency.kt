@@ -1,4 +1,4 @@
-package com.develop.currencyconverter.model
+package com.develop.currencyconverter.data.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
