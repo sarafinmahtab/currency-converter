@@ -2,10 +2,12 @@ package com.develop.currencyconverter.ui.main.converter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,20 +24,14 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ConverterScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface)
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Converter View",
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colors.onSurface,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 14.sp
-        )
+    Row {
+        Column {
+            TextField(value = "1", onValueChange = {})
+        }
+        Column {
+            TextField(value = "1", onValueChange = {})
+        }
+        Text(text = "Demo")
     }
 }
 

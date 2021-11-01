@@ -1,7 +1,6 @@
 package com.develop.currencyconverter.data.source.remote
 
-import com.develop.currencyconverter.data.source.CurrencyApiService
-import com.develop.currencyconverter.data.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyRates
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,17 +14,10 @@ class RemoteDataSourceImpl @Inject constructor(
     private val currencyApiService: CurrencyApiService
 ) : RemoteDataSource {
 
-    override suspend fun convertCurrency(
-        rapidApiKey: String,
-        rapidAPiHost: String,
-        responseFormat: String,
-        fromCurrency: String,
-        toCurrency: String,
-        amountToConvert: Double
-    ): CurrencyConversionResult {
-
-        return currencyApiService.convertCurrency(
-            rapidApiKey, rapidAPiHost, responseFormat, fromCurrency, toCurrency, amountToConvert
-        )
+    override suspend fun getLatestRates(
+        appId: String,
+        base: String,
+    ): CurrencyRates {
+        return currencyApiService.getLatestRates(appId, base)
     }
 }

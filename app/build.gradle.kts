@@ -20,6 +20,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+//        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
+//        buildConfigField("String", "API_APP_ID", "\"${currencyApiAppID}\"")
     }
 
     buildTypes {
@@ -71,6 +74,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofit2_version"]}")
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
+    implementation("com.airbnb.android:lottie-compose:4.2.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

@@ -1,10 +1,9 @@
 package com.develop.currencyconverter.data.repository
 
 import com.android.core.helpers.Results
-import com.develop.currencyconverter.data.ServerConstant
+import com.develop.currencyconverter.data.model.CurrencyRates
 import com.develop.currencyconverter.data.source.remote.RemoteDataSource
 import com.develop.currencyconverter.helper.ResolveApiResponse
-import com.develop.currencyconverter.data.model.CurrencyConversionResult
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,21 +20,9 @@ class CurrencyRepositoryImpl @Inject constructor(
     private val resolveApiResponse: ResolveApiResponse
 ) : CurrencyRepository {
 
-    override suspend fun convertCurrency(
-        fromCurrency: String,
-        toCurrency: String,
-        amountToConvert: Double
-    ): Results<CurrencyConversionResult> = withContext(Dispatchers.IO) {
-
+    override suspend fun getLatestRates(appId: String, base: String): Results<CurrencyRates> = withContext(Dispatchers.IO) {
         return@withContext resolveApiResponse.resolve("CurrencyRepositoryImpl->convertCurrency") {
-            remoteDataSource.convertCurrency(
-                ServerConstant.RAPID_API_KEY,
-                ServerConstant.RAPID_API_HOST,
-                ServerConstant.RESPONSE_FORMAT,
-                fromCurrency,
-                toCurrency,
-                amountToConvert
-            )
+            remoteDataSource.getLatestRates(appId, base)
         }
     }
 }

@@ -8,11 +8,11 @@ import androidx.annotation.StringDef
  */
 
 @StringDef(
-    CurrencyType.USD,
-    CurrencyType.EUR,
-    CurrencyType.BDT
+    Currency.USD,
+    Currency.EUR,
+    Currency.BDT
 )
-annotation class CurrencyType {
+annotation class Currency {
     companion object {
         const val USD = "USD"
         const val EUR = "EUR"

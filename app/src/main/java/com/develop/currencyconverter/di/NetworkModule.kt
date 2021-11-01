@@ -1,8 +1,6 @@
 package com.develop.currencyconverter.di
 
 import com.develop.currencyconverter.BuildConfig
-import com.develop.currencyconverter.data.ServerConstant
-import com.develop.currencyconverter.data.source.CurrencyApiService
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -10,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 

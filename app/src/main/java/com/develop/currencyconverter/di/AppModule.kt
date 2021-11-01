@@ -1,7 +1,7 @@
 package com.develop.currencyconverter.di
 
 import com.develop.currencyconverter.data.ServerConstant
-import com.develop.currencyconverter.data.source.CurrencyApiService
+import com.develop.currencyconverter.data.source.remote.CurrencyApiService
 import com.develop.currencyconverter.data.source.remote.RemoteDataSource
 import com.develop.currencyconverter.data.source.remote.RemoteDataSourceImpl
 import dagger.Binds

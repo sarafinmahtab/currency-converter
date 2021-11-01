@@ -1,6 +1,6 @@
 package com.develop.currencyconverter.data.source.remote
 
-import com.develop.currencyconverter.data.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyRates
 
 /**
  * @author Shamsul Arafin Mahtab
@@ -9,12 +9,5 @@ import com.develop.currencyconverter.data.model.CurrencyConversionResult
 
 interface RemoteDataSource {
 
-    suspend fun convertCurrency(
-        rapidApiKey: String,
-        rapidAPiHost: String,
-        responseFormat: String,
-        fromCurrency: String,
-        toCurrency: String,
-        amountToConvert: Double
-    ): CurrencyConversionResult
+    suspend fun getLatestRates(appId: String, base: String): CurrencyRates
 }

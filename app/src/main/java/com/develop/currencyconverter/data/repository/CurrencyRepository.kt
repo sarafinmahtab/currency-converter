@@ -1,7 +1,7 @@
 package com.develop.currencyconverter.data.repository
 
 import com.android.core.helpers.Results
-import com.develop.currencyconverter.data.model.CurrencyConversionResult
+import com.develop.currencyconverter.data.model.CurrencyRates
 
 /**
  * @author Shamsul Arafin Mahtab
@@ -10,9 +10,5 @@ import com.develop.currencyconverter.data.model.CurrencyConversionResult
 
 interface CurrencyRepository {
 
-    suspend fun convertCurrency(
-        fromCurrency: String,
-        toCurrency: String,
-        amountToConvert: Double
-    ): Results<CurrencyConversionResult>
+    suspend fun getLatestRates(appId: String, base: String): Results<CurrencyRates>
 }
