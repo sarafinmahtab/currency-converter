@@ -20,9 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.*
 import com.develop.currencyconverter.R
 
 
@@ -93,7 +91,8 @@ fun TopBar() {
 @Composable
 fun Loader() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
-    LottieAnimation(composition)
+    val progress by animateLottieCompositionAsState(composition, iterations = LottieConstants.IterateForever)
+    LottieAnimation(composition, progress)
 }
 
 @Preview(showBackground = true)
