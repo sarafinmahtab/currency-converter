@@ -1,20 +1,17 @@
 package com.develop.currencyconverter.ui.main.converter
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import com.develop.currencyconverter.R
+import com.develop.currencyconverter.ui.components.ItemSelectionSpinner
 
 
 /*
@@ -24,17 +21,42 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ConverterScreen() {
-    Row {
-        Column {
-            TextField(value = "1", onValueChange = {})
+    val currencyList = listOf("USD", "EUR", "BDT")
+    val defaultFromCurrency = 1.1f
+
+    Column {
+        Row(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            TextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp),
+                value = defaultFromCurrency.toString(),
+                label = {
+                    Text(text = stringResource(R.string.from_currency))
+                },
+                singleLine = true,
+                onValueChange = {
+                    //TODO work on value change
+                }
+            )
+            ItemSelectionSpinner(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp),
+                items = currencyList,
+                initialSelection = currencyList.first()
+            )
         }
-        Column {
+        Row(
+            modifier = Modifier.padding(16.dp)
+        ) {
             TextField(value = "1", onValueChange = {})
         }
         Text(text = "Demo")
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

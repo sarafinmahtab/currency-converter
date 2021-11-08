@@ -25,7 +25,8 @@ class MainViewModel @Inject constructor(
     private val _currencyRates: MutableStateFlow<Results<CurrencyRates>> = MutableStateFlow(Results.Success(CurrencyRates()))
     val currencyRates: StateFlow<Results<CurrencyRates>> = _currencyRates
 
-    private val _initialLoading = MutableStateFlow(true)
+    //TODO: Change `false` to `true` after work is done
+    private val _initialLoading = MutableStateFlow(false)
     val initialLoading: StateFlow<Boolean> = _initialLoading
 
     fun getLatestRates() {

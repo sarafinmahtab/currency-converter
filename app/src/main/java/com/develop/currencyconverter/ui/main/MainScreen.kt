@@ -34,7 +34,8 @@ fun MainScreen(viewModel: MainViewModel) {
     val loadingCurrencyRates by viewModel.initialLoading.collectAsState()
 
     if (loadingCurrencyRates) {
-        viewModel.getLatestRates()
+        //TODO: Remove below comment after work is done
+//        viewModel.getLatestRates()
 
         Box(
             modifier = Modifier
