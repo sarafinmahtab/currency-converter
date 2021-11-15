@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.develop.currencyconverter.R
 import com.develop.currencyconverter.ui.components.ItemSelectionSpinner
+import com.develop.currencyconverter.ui.main.MainViewModel
 
 
 /*
@@ -20,8 +23,8 @@ import com.develop.currencyconverter.ui.components.ItemSelectionSpinner
  */
 
 @Composable
-fun ConverterScreen() {
-    val currencyList = listOf("USD", "EUR", "BDT")
+fun ConverterScreen(viewModel: MainViewModel) {
+    val currencyList by viewModel.liveCurrencyList.collectAsState()
     val defaultFromCurrency = 1.1f
 
     Column {
@@ -46,7 +49,7 @@ fun ConverterScreen() {
                     .weight(1f)
                     .padding(4.dp),
                 items = currencyList,
-                initialSelection = currencyList.first()
+                initialSelection = "Select Currency"
             )
         }
         Row(
@@ -61,5 +64,5 @@ fun ConverterScreen() {
 @Preview(showBackground = true)
 @Composable
 fun ConverterScreenPreview() {
-    ConverterScreen()
+//    ConverterScreen(viewModel)
 }

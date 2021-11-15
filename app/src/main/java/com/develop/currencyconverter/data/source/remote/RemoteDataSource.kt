@@ -1,6 +1,6 @@
 package com.develop.currencyconverter.data.source.remote
 
-import com.develop.currencyconverter.data.model.CurrencyRates
+import com.develop.currencyconverter.data.model.api.CurrencyRates
 
 /**
  * @author Shamsul Arafin Mahtab

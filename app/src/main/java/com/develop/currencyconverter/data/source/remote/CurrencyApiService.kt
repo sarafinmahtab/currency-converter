@@ -1,6 +1,6 @@
 package com.develop.currencyconverter.data.source.remote
 
-import com.develop.currencyconverter.data.model.CurrencyRates
+import com.develop.currencyconverter.data.model.api.CurrencyRates
 import retrofit2.http.GET
 import retrofit2.http.Query
 

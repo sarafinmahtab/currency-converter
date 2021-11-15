@@ -14,6 +14,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.loadCountriesInfo(resources)
+
         setContent {
             CurrencyConverterTheme {
                 MainScreen(viewModel)

@@ -87,14 +87,14 @@ fun BottomNavBar(navController: NavController) {
 }
 
 @Composable
-fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
+fun Navigation(mainViewModel: MainViewModel, navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(
         navController,
         startDestination = BottomNavigationScreen.Converter.route,
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(BottomNavigationScreen.Converter.route) {
-            ConverterScreen()
+            ConverterScreen(mainViewModel)
         }
         composable(BottomNavigationScreen.Currencies.route) {
             CurrenciesScreen()

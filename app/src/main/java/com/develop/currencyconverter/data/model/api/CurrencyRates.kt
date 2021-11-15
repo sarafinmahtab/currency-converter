@@ -1,4 +1,4 @@
-package com.develop.currencyconverter.data.model
+package com.develop.currencyconverter.data.model.api
 
 import com.develop.currencyconverter.data.ServerConstant
 

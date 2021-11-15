@@ -52,7 +52,7 @@ fun MainScreen(viewModel: MainViewModel) {
             topBar = { TopBar() },
             bottomBar = { BottomNavBar(navController) }
         ) { innerPadding ->
-            Navigation(navController = navController, innerPadding)
+            Navigation(viewModel, navController, innerPadding)
         }
     }
 }

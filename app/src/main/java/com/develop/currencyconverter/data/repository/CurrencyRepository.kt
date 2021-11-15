@@ -1,7 +1,7 @@
 package com.develop.currencyconverter.data.repository
 
 import com.android.core.helpers.Results
-import com.develop.currencyconverter.data.model.CurrencyRates
+import com.develop.currencyconverter.data.model.api.CurrencyRates
 
 /**
  * @author Shamsul Arafin Mahtab
