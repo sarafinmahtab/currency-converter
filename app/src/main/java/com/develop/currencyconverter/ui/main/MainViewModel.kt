@@ -36,8 +36,7 @@ class MainViewModel @Inject constructor(
     private val _liveCurrencyList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
     val liveCurrencyList: StateFlow<List<String>> = _liveCurrencyList
 
-    //TODO: Change `false` to `true` after work is done
-    private val _initialLoading = MutableStateFlow(false)
+    private val _initialLoading = MutableStateFlow(true)
     val initialLoading: StateFlow<Boolean> = _initialLoading
 
     fun loadCountriesInfo(resources: Resources) {

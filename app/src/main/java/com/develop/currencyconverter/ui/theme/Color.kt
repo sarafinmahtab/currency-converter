@@ -1,5 +1,6 @@
 package com.develop.currencyconverter.ui.theme
 
+import androidx.compose.material.Colors
 import androidx.compose.ui.graphics.Color
 
 /**
@@ -29,3 +30,6 @@ val ColorSurfaceDark = Color(0xFF545454)
 val ColorOnSurfaceDark = Color.White
 val ColorBackgroundDark = Color(0xFF3D3D3D)
 val ColorOnBackgroundDark = Color.White
+
+val Colors.stroke: Color get() = Color.LightGray
+val Colors.light: Color get() = if (isLight) Color.LightGray else Color.DarkGray

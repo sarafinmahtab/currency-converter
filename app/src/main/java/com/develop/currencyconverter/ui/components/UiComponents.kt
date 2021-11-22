@@ -10,18 +10,35 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
 import com.develop.currencyconverter.R
+import com.develop.currencyconverter.ui.theme.light
 
 
 /*
  * Created by Arafin Mahtab on 11/2/2021.
  * Copyright (c) 2021 Rangan Apps. All rights reserved.
  */
+
+@Composable
+fun appTextFieldColors(
+    textColor: Color = MaterialTheme.colors.onSurface,
+    disabledTextColor: Color = MaterialTheme.colors.light,
+    backgroundColor: Color = Color.White,
+    cursorColor: Color = MaterialTheme.colors.secondary,
+    errorCursorColor: Color = MaterialTheme.colors.error
+) = TextFieldDefaults.textFieldColors(
+    textColor = textColor,
+    disabledTextColor = disabledTextColor,
+    backgroundColor = backgroundColor,
+    cursorColor = cursorColor,
+    errorCursorColor = errorCursorColor
+)
 
 @Composable
 fun ItemSelectionSpinner(
@@ -50,6 +67,7 @@ fun ItemSelectionSpinner(
                     },
                 onValueChange = { item.value = it },
                 value = item.value,
+                singleLine = true,
                 readOnly = true,
                 trailingIcon = {
                     Icon(
