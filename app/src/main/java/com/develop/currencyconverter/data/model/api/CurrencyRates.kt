@@ -5,7 +5,6 @@ import com.develop.currencyconverter.data.ServerConstant
 
 /*
  * Created by Arafin Mahtab on 10/31/2021.
- * Copyright (c) 2021 Rangan Apps. All rights reserved.
  */
 
 /**

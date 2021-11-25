@@ -31,10 +31,10 @@ class MainViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    private val _currencyRates: MutableStateFlow<Results<CurrencyRates>> = MutableStateFlow(Results.Success(CurrencyRates()))
+    private val _currencyRates: MutableStateFlow<CurrencyRates> = MutableStateFlow(CurrencyRates())
 
-    private val _liveCurrencyList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
-    val liveCurrencyList: StateFlow<List<String>> = _liveCurrencyList
+    private val _liveCurrencyWithFlagList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
+    val liveCurrencyWithFlagList: StateFlow<List<String>> = _liveCurrencyWithFlagList
 
     private val _initialLoading = MutableStateFlow(true)
     val initialLoading: StateFlow<Boolean> = _initialLoading
@@ -61,19 +61,42 @@ class MainViewModel @Inject constructor(
             when (val result = currencyRepository.getLatestRates(ServerConstant.CURRENCY_API_APP_ID, ServerConstant.BASE_CURRENCY)) {
                 is Results.Success -> {
                     _initialLoading.value = false
-                    _liveCurrencyList.value = result.value.rates?.keys?.map {
+                    _liveCurrencyWithFlagList.value = result.value.rates?.keys?.map {
                         if (currenciesPerCountryFlag.containsKey(it)) {
                             "${currenciesPerCountryFlag[it]} $it"
                         } else {
                             it
                         }
                     } ?: emptyList()
-                    _currencyRates.value = result
+                    _currencyRates.value = result.value
                 }
                 is Results.Failure -> {
                     _initialLoading.value = false
-                    _liveCurrencyList.value = emptyList()
+                    _liveCurrencyWithFlagList.value = emptyList()
                 }
+            }
+        }
+    }
+
+    fun getCurrencyWithFlag(currencyWithoutFlag: String): String {
+        return _liveCurrencyWithFlagList.value.find {
+            it.endsWith(currencyWithoutFlag)
+        } ?: currencyWithoutFlag
+    }
+
+    fun convertCurrency(
+        baseCurrency: String,
+        baseCurrencyValue: String,
+        currentCurrency: String,
+        convertedCurrencyAmount: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            if (!_currencyRates.value.rates.isNullOrEmpty() && baseCurrencyValue.isNotBlank()) {
+                val rateForBaseCurrency = _currencyRates.value.rates?.get(baseCurrency) ?: 1.0
+                val rateForCurrentCurrency = _currencyRates.value.rates?.get(currentCurrency) ?: 1.0
+                convertedCurrencyAmount((baseCurrencyValue.toDouble().times(rateForCurrentCurrency / rateForBaseCurrency).toString()))
+            } else {
+                convertedCurrencyAmount((0.0).toString())
             }
         }
     }

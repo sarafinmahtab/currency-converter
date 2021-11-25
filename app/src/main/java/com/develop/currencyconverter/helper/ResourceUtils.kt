@@ -7,7 +7,6 @@ import java.io.*
 
 /*
  * Created by Arafin Mahtab on 11/10/2021.
- * Copyright (c) 2021 Rangan Apps. All rights reserved.
  */
 
 fun Resources.getJsonFromRawResource(@RawRes resourcesId: Int): String {

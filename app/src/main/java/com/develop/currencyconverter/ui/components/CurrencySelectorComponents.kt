@@ -21,11 +21,10 @@ import com.develop.currencyconverter.R
 
 /*
  * Created by Arafin Mahtab on 11/22/2021.
- * Copyright (c) 2021 Rangan Apps. All rights reserved.
  */
 
 @Composable
-fun CurrencyList(
+fun DropdownCurrencyList(
     currencies: List<String>,
     selectCurrency: (String) -> Unit
 ) {
@@ -36,7 +35,7 @@ fun CurrencyList(
                     .fillMaxWidth()
                     .padding(16.dp)
                     .clickable {
-                        selectCurrency(it)
+                        selectCurrency(it.split(" ").last())
                     },
                 text = it,
                 color = MaterialTheme.colors.onSurface,
@@ -49,7 +48,7 @@ fun CurrencyList(
 @Composable
 fun CurrencySelector(
     modifier: Modifier = Modifier,
-    currencyValue: String,
+    currencyWithFlag: String,
     onClickSelector: () -> Unit
 ) {
     Row(
@@ -59,14 +58,14 @@ fun CurrencySelector(
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
-            text = currencyValue,
+            text = currencyWithFlag,
             color = MaterialTheme.colors.onSurface,
             style = MaterialTheme.typography.button
         )
         Icon(
             modifier = Modifier.padding(start = 8.dp),
             painter = painterResource(id = R.drawable.ic_spinner_arrow),
-            contentDescription = currencyValue
+            contentDescription = currencyWithFlag
         )
     }
 }
@@ -74,5 +73,5 @@ fun CurrencySelector(
 @Preview(showBackground = true)
 @Composable
 fun CurrencySelectorPreview() {
-    CurrencySelector(currencyValue = "Select") {}
+    CurrencySelector(currencyWithFlag = "Select") {}
 }

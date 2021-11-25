@@ -22,7 +22,6 @@ import com.develop.currencyconverter.ui.theme.light
 
 /*
  * Created by Arafin Mahtab on 11/2/2021.
- * Copyright (c) 2021 Rangan Apps. All rights reserved.
  */
 
 @Composable

@@ -22,6 +22,26 @@
         <entry key="../../../../layout/compose-model-1637659239347.xml" value="1.5576923076923077" />
         <entry key="../../../../layout/compose-model-1637659425997.xml" value="0.375" />
         <entry key="../../../../layout/compose-model-1637659836753.xml" value="0.375" />
+        <entry key="../../../../layout/compose-model-1637810891935.xml" value="0.3592592592592593" />
+        <entry key="../../../../layout/compose-model-1637810895517.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1637810912578.xml" value="1.4923076923076923" />
+        <entry key="../../../../layout/compose-model-1637810916507.xml" value="1.4923076923076923" />
+        <entry key="../../../../layout/compose-model-1637820775989.xml" value="0.30405405405405406" />
+        <entry key="../../../../layout/compose-model-1637820781554.xml" value="0.375" />
+        <entry key="../../../../layout/compose-model-1640237254803.xml" value="0.35648148148148145" />
+        <entry key="../../../../layout/compose-model-1640237442805.xml" value="1.4807692307692308" />
+        <entry key="../../../../layout/compose-model-1640251688432.xml" value="1.4807692307692308" />
+        <entry key="../../../../layout/compose-model-1640251766030.xml" value="1.4807692307692308" />
+        <entry key="../../../../layout/compose-model-1640254283626.xml" value="1.5576923076923077" />
+        <entry key="../../../../layout/compose-model-1640254439261.xml" value="1.5576923076923077" />
+        <entry key="../../../../layout/compose-model-1640842643284.xml" value="1.5576923076923077" />
+        <entry key="../../../../layout/compose-model-1640842657310.xml" value="0.375" />
+        <entry key="../../../../layout/compose-model-1640844608523.xml" value="1.5576923076923077" />
+        <entry key="../../../../layout/compose-model-1640845613713.xml" value="1.5576923076923077" />
+        <entry key="../../../../layout/compose-model-1640847599540.xml" value="1.4423076923076923" />
+        <entry key="../../../../layout/compose-model-1640848060276.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1640850857804.xml" value="0.375" />
+        <entry key="../../../../layout/compose-model-1640857028564.xml" value="0.3472222222222222" />
         <entry key="..\:/Professions/Projects/Practice/Currency Converter/app/src/main/res/drawable/ic_calculator.xml" value="0.3435185185185185" />
         <entry key="..\:/Professions/Projects/Practice/Currency Converter/app/src/main/res/drawable/ic_converter.xml" value="0.25" />
         <entry key="..\:/Professions/Projects/Practice/Currency Converter/app/src/main/res/drawable/ic_currency.xml" value="0.36615384615384616" />
@@ -32,6 +52,7 @@
         <entry key="..\:/Professions/Projects/Practice/Currency Converter/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34074074074074073" />
         <entry key="..\:/Professions/Projects/Practice/Currency Converter/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.34074074074074073" />
         <entry key="app/src/main/res/drawable/ic_calculater.xml" value="0.36354166666666665" />
+        <entry key="app/src/main/res/drawable/ic_swap_currency.xml" value="0.3472222222222222" />
       </map>
     </option>
   </component>

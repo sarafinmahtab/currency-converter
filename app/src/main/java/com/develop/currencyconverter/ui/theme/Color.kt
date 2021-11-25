@@ -16,8 +16,8 @@ val ColorSecondaryVariantLight = Color(0xFF0097A7)
 val ColorOnSecondaryLight = Color.White
 val ColorSurfaceLight = Color.White
 val ColorOnSurfaceLight = Color.Black
-val ColorBackgroundLight = Color.White
-val ColorOnBackgroundLight = Color.Black
+val ColorBackgroundLight = Color(0xFFF5F5F5)
+val ColorOnBackgroundLight = Color.DarkGray
 
 
 val ColorPrimaryDark = Color(0xFF3D3D3D)

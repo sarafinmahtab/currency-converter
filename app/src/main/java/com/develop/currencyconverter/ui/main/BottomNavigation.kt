@@ -29,7 +29,6 @@ import com.develop.currencyconverter.ui.main.timeline.TimelineScreen
 
 /*
  * Created by Arafin Mahtab on 9/19/2021.
- * Copyright (c) 2021 Rangan Apps. All rights reserved.
  */
 
 sealed class BottomNavigationScreen(val route: String, @DrawableRes val icon: Int, @StringRes val title: Int) {
