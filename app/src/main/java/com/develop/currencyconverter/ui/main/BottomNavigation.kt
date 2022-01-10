@@ -96,7 +96,7 @@ fun Navigation(mainViewModel: MainViewModel, navController: NavHostController, i
             ConverterScreen(mainViewModel)
         }
         composable(BottomNavigationScreen.Currencies.route) {
-            CurrenciesScreen()
+            CurrenciesScreen(mainViewModel)
         }
         composable(BottomNavigationScreen.Timeline.route) {
             TimelineScreen()
