@@ -1,7 +1,7 @@
 package com.sarafinmahtab.currencyconverter.di
 
-import com.sarafinmahtab.currencyconverter.data.ServerConstant
-import com.sarafinmahtab.currencyconverter.data.source.remote.CurrencyApiService
+import com.sarafinmahtab.currencyconverter.BuildConfig
+import com.sarafinmahtab.currencyconverter.data.source.remote.OpenExchangeAPIService
 import com.sarafinmahtab.currencyconverter.data.source.remote.RemoteDataSource
 import com.sarafinmahtab.currencyconverter.data.source.remote.RemoteDataSourceImpl
 import dagger.Binds
@@ -26,18 +26,17 @@ abstract class AppModule {
     abstract fun bindsRemoteDataSource(remoteDataSourceImpl: RemoteDataSourceImpl): RemoteDataSource
 
     companion object {
-
         @Provides
-        fun provideCurrencyApiService(
+        fun provideOpenExchangeAPIService(
             okHttpClientBuilder: OkHttpClient.Builder,
             gsonConverterFactory: GsonConverterFactory
-        ): CurrencyApiService {
+        ): OpenExchangeAPIService {
             return Retrofit.Builder()
-                .baseUrl(ServerConstant.BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(gsonConverterFactory)
                 .client(okHttpClientBuilder.build())
                 .build()
-                .create(CurrencyApiService::class.java)
+                .create(OpenExchangeAPIService::class.java)
         }
     }
 }

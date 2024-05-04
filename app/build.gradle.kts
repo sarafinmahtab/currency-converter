@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
@@ -5,6 +8,9 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize")
     kotlin("kapt")
 }
+
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(rootProject.file("keystore.properties")))
 
 android {
     namespace = "com.sarafinmahtab.currencyconverter"
@@ -22,8 +28,8 @@ android {
             useSupportLibrary = true
         }
 
-//        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
-//        buildConfigField("String", "API_APP_ID", "\"${currencyApiAppID}\"")
+        buildConfigField("String", "OPEN_EXCHANGE_APP_ID", keystoreProperties.getProperty("openExchangeAppId"))
+        buildConfigField("String", "BASE_URL", keystoreProperties.getProperty("baseUrl"))
     }
 
     buildTypes {
@@ -83,8 +89,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    implementation("com.airbnb.android:lottie-compose:5.0.1")
 
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.05.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

@@ -11,7 +11,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-class ResolveApiResponse @Inject constructor() {
+class APIResolver @Inject constructor() {
 
     suspend fun <T> resolve(classTag: String, updateCall: suspend () -> T) =
         try {

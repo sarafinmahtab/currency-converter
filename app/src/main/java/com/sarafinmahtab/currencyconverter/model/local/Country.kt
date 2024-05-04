@@ -1,4 +1,4 @@
-package com.sarafinmahtab.currencyconverter.data.model.local
+package com.sarafinmahtab.currencyconverter.model.local
 
 import com.google.gson.annotations.SerializedName
 

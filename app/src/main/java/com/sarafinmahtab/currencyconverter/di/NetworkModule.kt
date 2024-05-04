@@ -1,14 +1,18 @@
 package com.sarafinmahtab.currencyconverter.di
 
+import android.content.Context
 import com.sarafinmahtab.currencyconverter.BuildConfig
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 /**
@@ -29,7 +33,9 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideOkHttpClientBuilder(): OkHttpClient.Builder {
+    fun provideOkHttpClientBuilder(
+        @ApplicationContext context: Context,
+    ): OkHttpClient.Builder {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
             interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -37,6 +43,12 @@ object NetworkModule {
             interceptor.level = HttpLoggingInterceptor.Level.NONE
         }
         return OkHttpClient.Builder()
+            .cache(
+                Cache(
+                    directory = File(context.cacheDir, "http_cache"),
+                    maxSize = 50L * 1024L * 1024L,
+                )
+            )
             .addInterceptor(interceptor)
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(30, TimeUnit.SECONDS)

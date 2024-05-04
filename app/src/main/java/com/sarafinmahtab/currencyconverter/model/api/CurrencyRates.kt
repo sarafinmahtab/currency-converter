@@ -1,6 +1,4 @@
-package com.sarafinmahtab.currencyconverter.data.model.api
-
-import com.sarafinmahtab.currencyconverter.data.ServerConstant
+package com.sarafinmahtab.currencyconverter.model.api
 
 
 /*
@@ -191,6 +189,6 @@ data class CurrencyRates(
     val disclaimer: String? = null,
     val license: String? = null,
     val timestamp: Long = System.currentTimeMillis(),
-    val base: String = ServerConstant.BASE_CURRENCY,
+    val base: String,
     val rates: Map<String, Double>? = null
 )

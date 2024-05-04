@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.ripple.rememberRipple
@@ -29,11 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.*
 import com.sarafinmahtab.currencyconverter.ui.main.converter.ConverterScreen
 import com.sarafinmahtab.currencyconverter.ui.main.currencies.CurrenciesScreen
 import com.sarafinmahtab.currencyconverter.ui.main.timeline.TimelineScreen
 import com.sarafinmahtab.currencyconverter.R
+import com.sarafinmahtab.currencyconverter.ui.components.GifImage
 
 
 /*
@@ -53,7 +54,11 @@ fun MainScreen(viewModel: MainViewModel) {
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            Loader()
+            GifImage(
+                modifier = Modifier.size(64.dp),
+                gifRes = R.drawable.loading,
+                contentDescription = "Loading GIF",
+            )
         }
     } else {
         MainContent(viewModel)
@@ -116,14 +121,6 @@ fun TopBar() {
             )
         }
     )
-}
-
-@Composable
-fun Loader() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
-    val progress by animateLottieCompositionAsState(composition)
-
-    LottieAnimation(composition, progress)
 }
 
 @Preview(showBackground = true)

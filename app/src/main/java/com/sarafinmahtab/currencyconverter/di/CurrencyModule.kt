@@ -15,7 +15,6 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 abstract class CurrencyModule {
-
     @Binds
     abstract fun bindsCurrencyRepository(currencyRepositoryImpl: CurrencyRepositoryImpl): CurrencyRepository
 }
