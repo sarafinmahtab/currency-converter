@@ -5,9 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,7 +31,7 @@ fun CurrenciesScreen(viewModel: MainViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.surface)
+            .background(MaterialTheme.colorScheme.surface)
             .wrapContentSize(Alignment.Center)
     ) {
         LazyColumn {
@@ -38,15 +39,13 @@ fun CurrenciesScreen(viewModel: MainViewModel) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            /* TODO */
-                        }
+                        .clickable { /* TODO */ }
                         .padding(),
                     text = it,
-                    color = MaterialTheme.colors.onSurface,
-                    style = MaterialTheme.typography.button
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.labelMedium,
                 )
-                Divider(color = MaterialTheme.colors.stroke, thickness = 1.dp)
+                HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
             }
         }
     }

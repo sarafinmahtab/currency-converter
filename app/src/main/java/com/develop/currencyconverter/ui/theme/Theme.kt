@@ -1,9 +1,9 @@
 package com.develop.currencyconverter.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 /**
@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
  * @since 28/07/21
  */
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
     primary = ColorPrimaryDark,
-    primaryVariant = ColorPrimaryVariantDark,
+    primaryContainer = ColorPrimaryVariantDark,
     onPrimary = ColorOnPrimaryDark,
     secondary = ColorSecondaryDark,
-    secondaryVariant = ColorSecondaryVariantDark,
+    secondaryContainer = ColorSecondaryVariantDark,
     onSecondary = ColorOnSecondaryDark,
     surface = ColorSurfaceDark,
     onSurface = ColorOnSurfaceDark,
@@ -24,12 +24,12 @@ private val DarkColorPalette = darkColors(
     onBackground = ColorOnBackgroundDark
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
     primary = ColorPrimaryLight,
-    primaryVariant = ColorPrimaryVariantLight,
+    primaryContainer = ColorPrimaryVariantLight,
     onPrimary = ColorOnPrimaryLight,
     secondary = ColorSecondaryLight,
-    secondaryVariant = ColorSecondaryVariantLight,
+    secondaryContainer = ColorSecondaryVariantLight,
     onSecondary = ColorOnSecondaryLight,
     surface = ColorSurfaceLight,
     onSurface = ColorOnSurfaceLight,
@@ -49,7 +49,7 @@ fun CurrencyConverterTheme(
     }
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

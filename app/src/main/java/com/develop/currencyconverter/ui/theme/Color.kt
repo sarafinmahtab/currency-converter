@@ -1,9 +1,6 @@
 package com.develop.currencyconverter.ui.theme
 
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 
 /**
@@ -34,21 +31,6 @@ val ColorOnSurfaceDark = Color.White
 val ColorBackgroundDark = Color(0xFF3D3D3D)
 val ColorOnBackgroundDark = Color.White
 
-val Colors.stroke: Color get() = Color.LightGray
-val Colors.light: Color get() = if (isLight) Color.LightGray else Color.DarkGray
+val ColorScheme.stroke: Color get() = Color.LightGray
+val ColorScheme.light: Color get() = Color.LightGray
 
-
-@Composable
-fun appTextFieldColors(
-    textColor: Color = MaterialTheme.colors.onSurface,
-    disabledTextColor: Color = MaterialTheme.colors.light,
-    backgroundColor: Color = Color.White,
-    cursorColor: Color = MaterialTheme.colors.secondary,
-    errorCursorColor: Color = MaterialTheme.colors.error,
-) = TextFieldDefaults.textFieldColors(
-    textColor = textColor,
-    disabledTextColor = disabledTextColor,
-    backgroundColor = backgroundColor,
-    cursorColor = cursorColor,
-    errorCursorColor = errorCursorColor
-)

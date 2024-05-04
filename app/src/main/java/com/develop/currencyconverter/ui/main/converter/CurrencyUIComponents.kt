@@ -8,7 +8,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +28,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.develop.currencyconverter.R
-import com.develop.currencyconverter.ui.theme.appTextFieldColors
 import com.develop.currencyconverter.ui.theme.stroke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -28,11 +37,11 @@ import kotlinx.coroutines.launch
  * Created by Arafin Mahtab on 11/25/2021.
  */
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyPickerWithAmount(
     coroutineScope: CoroutineScope,
-    modalBottomSheetState: ModalBottomSheetState,
+    modalBottomSheetState: SheetState,
     @StringRes header: Int,
     currencyWithFlag: String,
     currencyAmount: MutableState<String>,
@@ -42,13 +51,13 @@ fun CurrencyPickerWithAmount(
     Text(
         modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
         text = stringResource(id = header),
-        style = MaterialTheme.typography.h2
+        style = MaterialTheme.typography.labelMedium,
     )
     Card(
         modifier = Modifier.padding(4.dp),
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colors.stroke),
-        elevation = 4.dp
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.stroke),
+        elevation = CardDefaults.elevatedCardElevation(4.dp),
     ) {
         Row(
             modifier = Modifier
@@ -66,7 +75,7 @@ fun CurrencyPickerWithAmount(
                 singleLine = true,
                 onValueChange = currencyAmountSelector,
                 shape = RoundedCornerShape(4.dp),
-                colors = appTextFieldColors()
+                colors = TextFieldDefaults.colors(),
             )
 
             CurrencySelector(
@@ -90,13 +99,13 @@ fun CurrencyPickerWithAmount(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun CurrencyPickerWithAmountPreview() {
     CurrencyPickerWithAmount(
         coroutineScope = rememberCoroutineScope(),
-        modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
+        modalBottomSheetState = rememberModalBottomSheetState(),
         header = R.string.from_currency,
         currencyWithFlag = "USD",
         currencyAmount = remember { mutableStateOf(DEFAULT_BASE_CURRENCY_VALUE.toString()) },
@@ -116,16 +125,18 @@ fun DropdownCurrencyList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        selectCurrency(it
-                            .split(" ")
-                            .last())
+                        selectCurrency(
+                            it
+                                .split(" ")
+                                .last()
+                        )
                     }
                     .padding(16.dp),
                 text = it,
-                color = MaterialTheme.colors.onSurface,
-                style = MaterialTheme.typography.button
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium
             )
-            Divider(color = MaterialTheme.colors.stroke, thickness = 1.dp)
+            HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.stroke)
         }
     }
 }
@@ -144,8 +155,8 @@ fun CurrencySelector(
         Text(
             modifier = Modifier.padding(8.dp),
             text = currencyWithFlag,
-            color = MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.button
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelMedium,
         )
         Icon(
             modifier = Modifier.padding(start = 8.dp),

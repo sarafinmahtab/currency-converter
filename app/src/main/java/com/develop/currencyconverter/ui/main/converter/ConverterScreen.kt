@@ -4,8 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.ContentAlpha.medium
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,14 +34,13 @@ const val DEFAULT_CURRENT_CURRENCY_VALUE = 0.0
 const val DEFAULT_BASE_CURRENCY = "USD"
 const val DEFAULT_CURRENT_CURRENCY = "BDT"
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConverterScreen(viewModel: MainViewModel) {
     val currencyList by viewModel.liveCurrencyWithFlagList.collectAsState()
 
-    val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val modalBottomSheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
-
     val converterState = rememberConverterState()
 
     val baseCurrencyAmountSelector: (String) -> Unit = {
@@ -69,8 +71,7 @@ fun ConverterScreen(viewModel: MainViewModel) {
 
     baseCurrencyAmountSelector(converterState.baseCurrencyAmount.value)
 
-    ModalBottomSheetLayout(
-        sheetState = modalBottomSheetState,
+    BottomSheetScaffold(
         sheetContent = {
             Box(modifier = Modifier.defaultMinSize(minHeight = 1.dp)) {
                 DropdownCurrencyList(currencies = currencyList) {
@@ -91,7 +92,7 @@ fun ConverterScreen(viewModel: MainViewModel) {
                 }
             }
         },
-        sheetShape = RoundedCornerShape(topEnd = medium, topStart = medium)
+        sheetShape = RoundedCornerShape(topEnd = 12.dp, topStart = 12.dp)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -131,7 +132,7 @@ fun ConverterScreen(viewModel: MainViewModel) {
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
                         text = stringResource(id = R.string.swap_currency),
-                        style = MaterialTheme.typography.h2
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }

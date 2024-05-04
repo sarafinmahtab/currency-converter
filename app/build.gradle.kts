@@ -1,23 +1,23 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    kotlin("android")
+    id("org.jetbrains.kotlin.plugin.parcelize")
+    kotlin("kapt")
 }
 
 android {
-    compileSdk = 31
+    namespace = "com.develop.currencyconverter"
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.develop.currencyconverter"
-        minSdk = 21
-        targetSdk = 31
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -43,10 +43,16 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["composeVersion"] as String
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
     kapt {
         correctErrorTypes = true
@@ -54,35 +60,38 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.navigation:navigation-compose:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.core:core-ktx:1.13.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation("com.google.accompanist:accompanist-insets:0.18.0")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.dagger:hilt-android:2.51")
+    kapt("com.google.dagger:hilt-compiler:2.51")
 
-    implementation("com.google.code.gson:gson:2.9.0")
-    implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
-    kapt("com.google.dagger:hilt-android-compiler:${rootProject.extra["hiltVersion"]}")
-
-    implementation("com.squareup.retrofit2:retrofit:${rootProject.extra["retrofit2Version"]}")
-    implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofit2Version"]}")
-
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("com.airbnb.android:lottie-compose:5.0.1")
 
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["composeVersion"]}")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

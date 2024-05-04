@@ -6,8 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,12 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.*
 import com.develop.currencyconverter.R
+import com.develop.currencyconverter.ui.main.converter.ConverterScreen
+import com.develop.currencyconverter.ui.main.currencies.CurrenciesScreen
+import com.develop.currencyconverter.ui.main.timeline.TimelineScreen
 
 
 /*
@@ -48,29 +59,43 @@ fun MainScreen(viewModel: MainViewModel) {
 
         Scaffold(
             topBar = { TopBar() },
-            bottomBar = { BottomNavBar(navController) }
+            bottomBar = { BottomNavigationBar(navController) }
         ) { innerPadding ->
-            Navigation(viewModel, navController, innerPadding)
+            NavHost(
+                navController = navController,
+                startDestination = BottomNavItem.Converter.route,
+                modifier = Modifier.padding(innerPadding),
+            ) {
+                composable(BottomNavItem.Converter.route) {
+                    ConverterScreen(viewModel)
+                }
+                composable(BottomNavItem.Currencies.route) {
+                    CurrenciesScreen(viewModel)
+                }
+                composable(BottomNavItem.Timeline.route) {
+                    TimelineScreen()
+                }
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar() {
     TopAppBar(
         title = {
             Text(
                 text = stringResource(id = R.string.app_name),
-                color = MaterialTheme.colors.primary,
-                style = MaterialTheme.typography.h1
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge,
             )
         },
-        backgroundColor = MaterialTheme.colors.onPrimary,
         actions = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_more_options),
                 contentDescription = stringResource(id = R.string.settings),
-                tint = MaterialTheme.colors.primary,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(Dp(5f))
                     .clickable(
@@ -90,7 +115,10 @@ fun TopBar() {
 @Composable
 fun Loader() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
-    val progress by animateLottieCompositionAsState(composition, iterations = LottieConstants.IterateForever)
+    val progress by animateLottieCompositionAsState(
+        composition,
+        iterations = LottieConstants.IterateForever
+    )
     LottieAnimation(composition, progress)
 }
 
