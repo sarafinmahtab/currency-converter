@@ -56,26 +56,31 @@ fun MainScreen(viewModel: MainViewModel) {
             Loader()
         }
     } else {
-        val navController = rememberNavController()
+        MainContent(viewModel)
+    }
+}
 
-        Scaffold(
-            topBar = { TopBar() },
-            bottomBar = { BottomNavigationBar(navController) }
-        ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = BottomNavItem.Converter.route,
-                modifier = Modifier.padding(innerPadding),
-            ) {
-                composable(BottomNavItem.Converter.route) {
-                    ConverterScreen(viewModel)
-                }
-                composable(BottomNavItem.Currencies.route) {
-                    CurrenciesScreen(viewModel)
-                }
-                composable(BottomNavItem.Timeline.route) {
-                    TimelineScreen()
-                }
+@Composable
+fun MainContent(viewModel: MainViewModel) {
+    val navController = rememberNavController()
+
+    Scaffold(
+        topBar = { TopBar() },
+        bottomBar = { BottomNavigationBar(navController) }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = BottomNavItem.Converter.route,
+            modifier = Modifier.padding(innerPadding),
+        ) {
+            composable(BottomNavItem.Converter.route) {
+                ConverterScreen(viewModel)
+            }
+            composable(BottomNavItem.Currencies.route) {
+                CurrenciesScreen(viewModel)
+            }
+            composable(BottomNavItem.Timeline.route) {
+                TimelineScreen()
             }
         }
     }

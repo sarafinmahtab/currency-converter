@@ -41,8 +41,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun CurrencyPickerWithAmount(
     coroutineScope: CoroutineScope,
-    modalBottomSheetState: SheetState,
-    @StringRes header: Int,
+    bottomSheetState: SheetState,
+    @StringRes titleRes: Int,
     currencyWithFlag: String,
     currencyAmount: MutableState<String>,
     currencyAmountSelector: (String) -> Unit,
@@ -50,7 +50,7 @@ fun CurrencyPickerWithAmount(
 ) {
     Text(
         modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
-        text = stringResource(id = header),
+        text = stringResource(id = titleRes),
         style = MaterialTheme.typography.labelMedium,
     )
     Card(
@@ -85,10 +85,10 @@ fun CurrencyPickerWithAmount(
                 currencyWithFlag = currencyWithFlag,
                 onClickSelector = {
                     coroutineScope.launch {
-                        if (modalBottomSheetState.isVisible) {
-                            modalBottomSheetState.hide()
+                        if (bottomSheetState.isVisible) {
+                            bottomSheetState.hide()
                         } else {
-                            modalBottomSheetState.show()
+                            bottomSheetState.show()
                         }
                     }
                     onClickCurrencyPicker()
@@ -105,32 +105,34 @@ fun CurrencyPickerWithAmount(
 fun CurrencyPickerWithAmountPreview() {
     CurrencyPickerWithAmount(
         coroutineScope = rememberCoroutineScope(),
-        modalBottomSheetState = rememberModalBottomSheetState(),
-        header = R.string.from_currency,
+        bottomSheetState = rememberModalBottomSheetState(),
+        titleRes = R.string.from_currency,
         currencyWithFlag = "USD",
         currencyAmount = remember { mutableStateOf(DEFAULT_BASE_CURRENCY_VALUE.toString()) },
-        currencyAmountSelector = {}
-    ) { }
+        currencyAmountSelector = {},
+        onClickCurrencyPicker = {},
+    )
 }
-
 
 @Composable
 fun DropdownCurrencyList(
     currencies: List<String>,
-    selectCurrency: (String) -> Unit,
+    onSelectCurrency: (String) -> Unit,
 ) {
     LazyColumn {
         items(currencies) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        selectCurrency(
-                            it
-                                .split(" ")
-                                .last()
-                        )
-                    }
+                    .clickable(
+                        onClick = {
+                            onSelectCurrency(
+                                it
+                                    .split(" ")
+                                    .last()
+                            )
+                        },
+                    )
                     .padding(16.dp),
                 text = it,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -153,13 +155,11 @@ fun CurrencySelector(
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            modifier = Modifier.padding(8.dp),
             text = currencyWithFlag,
             color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelLarge,
         )
         Icon(
-            modifier = Modifier.padding(start = 8.dp),
             painter = painterResource(id = R.drawable.ic_spinner_arrow),
             contentDescription = currencyWithFlag
         )

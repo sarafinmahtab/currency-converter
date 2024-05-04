@@ -3,16 +3,19 @@ package com.sarafinmahtab.currencyconverter.ui.main.converter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sarafinmahtab.currencyconverter.ui.main.MainViewModel
 import com.sarafinmahtab.currencyconverter.R
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -39,9 +43,10 @@ const val DEFAULT_CURRENT_CURRENCY = "BDT"
 fun ConverterScreen(viewModel: MainViewModel) {
     val currencyList by viewModel.liveCurrencyWithFlagList.collectAsState()
 
-    val modalBottomSheetState = rememberModalBottomSheetState()
-    val coroutineScope = rememberCoroutineScope()
     val converterState = rememberConverterState()
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val baseCurrencyAmountSelector: (String) -> Unit = {
         with(converterState) {
@@ -71,84 +76,133 @@ fun ConverterScreen(viewModel: MainViewModel) {
 
     baseCurrencyAmountSelector(converterState.baseCurrencyAmount.value)
 
-    BottomSheetScaffold(
-        sheetContent = {
-            Box(modifier = Modifier.defaultMinSize(minHeight = 1.dp)) {
-                DropdownCurrencyList(currencies = currencyList) {
-                    coroutineScope.launch {
-                        modalBottomSheetState.hide()
-                        with(converterState) {
-                            when (currencyDropdownSelectedState.value) {
-                                CurrencyDropdownState.BASE -> {
-                                    baseCurrency.value = it
-                                }
+    ConverterContent(
+        scope = scope,
+        bottomSheetState = sheetState,
+        converterState = converterState,
+        baseCurrency = viewModel.getCurrencyWithFlag(converterState.baseCurrency.value),
+        currentCurrency = viewModel.getCurrencyWithFlag(converterState.currentCurrency.value),
+        onClickBaseCurrencyPicker = {
+            converterState.currencyDropdownSelectedState.value = CurrencyDropdownState.BASE
+            showBottomSheet = true
+        },
+        baseCurrencyAmountSelector = baseCurrencyAmountSelector,
+        onClickCurrentCurrencyPicker = {
+            converterState.currencyDropdownSelectedState.value = CurrencyDropdownState.CURRENT
+            showBottomSheet = true
+        },
+        currentCurrencyAmountSelector = currentCurrencyAmountSelector,
+        onClickCurrencySwap = {
+            with(converterState) {
+                val tempBaseCurrency = baseCurrency.value
+                baseCurrency.value = currentCurrency.value
+                currentCurrency.value = tempBaseCurrency
 
-                                CurrencyDropdownState.CURRENT -> {
-                                    currentCurrency.value = it
-                                }
-                            }
-                            baseCurrencyAmountSelector(baseCurrencyAmount.value)
-                        }
-                    }
-                }
+                baseCurrencyAmountSelector(baseCurrencyAmount.value)
             }
         },
-        sheetShape = RoundedCornerShape(topEnd = 12.dp, topStart = 12.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Spacer(modifier = Modifier.padding(25.dp))
-            CurrencyPickerWithAmount(
-                coroutineScope,
-                modalBottomSheetState,
-                R.string.from_currency,
-                viewModel.getCurrencyWithFlag(converterState.baseCurrency.value),
-                converterState.baseCurrencyAmount,
-                baseCurrencyAmountSelector
-            ) {
-                converterState.currencyDropdownSelectedState.value = CurrencyDropdownState.BASE
-            }
-            Spacer(modifier = Modifier.padding(4.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .clickable {
-                            with(converterState) {
-                                val tempBaseCurrency = baseCurrency.value
-                                baseCurrency.value = currentCurrency.value
-                                currentCurrency.value = tempBaseCurrency
+    )
 
-                                baseCurrencyAmountSelector(baseCurrencyAmount.value)
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                    if (!sheetState.isVisible) {
+                        showBottomSheet = false
+                    }
+                }
+            },
+            sheetState = sheetState
+        ) {
+            Column {
+                Box(modifier = Modifier.defaultMinSize(minHeight = 1.dp)) {
+                    DropdownCurrencyList(
+                        currencies = currencyList,
+                        onSelectCurrency = {
+                            scope.launch {
+                                sheetState.hide()
+                                with(converterState) {
+                                    when (currencyDropdownSelectedState.value) {
+                                        CurrencyDropdownState.BASE -> {
+                                            baseCurrency.value = it
+                                        }
+
+                                        CurrencyDropdownState.CURRENT -> {
+                                            currentCurrency.value = it
+                                        }
+                                    }
+                                    baseCurrencyAmountSelector(baseCurrencyAmount.value)
+                                }
+                            }.invokeOnCompletion {
+                                if (!sheetState.isVisible) {
+                                    showBottomSheet = false
+                                }
                             }
                         }
-                        .padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_swap_currency),
-                        contentDescription = stringResource(R.string.swap_currency),
-                    )
-                    Text(
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
-                        text = stringResource(id = R.string.swap_currency),
-                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }
-            Spacer(modifier = Modifier.padding(4.dp))
-            CurrencyPickerWithAmount(
-                coroutineScope,
-                modalBottomSheetState,
-                R.string.to_currency,
-                viewModel.getCurrencyWithFlag(converterState.currentCurrency.value),
-                converterState.currentCurrencyAmount,
-                currentCurrencyAmountSelector
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ConverterContent(
+    scope: CoroutineScope,
+    bottomSheetState: SheetState,
+    converterState: ConverterState,
+    baseCurrency: String,
+    currentCurrency: String,
+    onClickBaseCurrencyPicker: () -> Unit,
+    baseCurrencyAmountSelector: (String) -> Unit,
+    onClickCurrentCurrencyPicker: () -> Unit,
+    currentCurrencyAmountSelector: (String) -> Unit,
+    onClickCurrencySwap: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Spacer(modifier = Modifier.padding(25.dp))
+        CurrencyPickerWithAmount(
+            coroutineScope = scope,
+            bottomSheetState = bottomSheetState,
+            titleRes = R.string.from_currency,
+            currencyWithFlag = baseCurrency,
+            currencyAmount = converterState.baseCurrencyAmount,
+            currencyAmountSelector = baseCurrencyAmountSelector,
+            onClickCurrencyPicker = onClickBaseCurrencyPicker,
+        )
+        Spacer(modifier = Modifier.padding(4.dp))
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .clickable(onClick = onClickCurrencySwap)
+                    .padding(4.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                converterState.currencyDropdownSelectedState.value = CurrencyDropdownState.CURRENT
+                Image(
+                    painter = painterResource(id = R.drawable.ic_swap_currency),
+                    contentDescription = stringResource(R.string.swap_currency),
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
+                    text = stringResource(id = R.string.swap_currency),
+                    style = MaterialTheme.typography.labelMedium,
+                )
             }
         }
+        Spacer(modifier = Modifier.padding(4.dp))
+        CurrencyPickerWithAmount(
+            coroutineScope = scope,
+            bottomSheetState = bottomSheetState,
+            titleRes = R.string.from_currency,
+            currencyWithFlag = currentCurrency,
+            currencyAmount = converterState.currentCurrencyAmount,
+            currencyAmountSelector = currentCurrencyAmountSelector,
+            onClickCurrencyPicker = onClickCurrentCurrencyPicker,
+        )
     }
 }
 
