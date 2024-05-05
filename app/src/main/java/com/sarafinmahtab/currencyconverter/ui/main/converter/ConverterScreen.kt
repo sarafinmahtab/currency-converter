@@ -41,7 +41,7 @@ const val DEFAULT_CURRENT_CURRENCY = "BDT"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConverterScreen(viewModel: MainViewModel) {
-    val currencyList by viewModel.liveCurrencyWithFlagList.collectAsState()
+    val currencyList by viewModel.liveCountryCurrencies.collectAsState()
 
     val converterState = rememberConverterState()
     val scope = rememberCoroutineScope()
@@ -80,8 +80,8 @@ fun ConverterScreen(viewModel: MainViewModel) {
         scope = scope,
         bottomSheetState = sheetState,
         converterState = converterState,
-        baseCurrency = viewModel.getCurrencyWithFlag(converterState.baseCurrency.value),
-        currentCurrency = viewModel.getCurrencyWithFlag(converterState.currentCurrency.value),
+        baseCountryFlag = viewModel.getCurrencyFlag(converterState.baseCurrency.value),
+        currentCountryFlag = viewModel.getCurrencyFlag(converterState.currentCurrency.value),
         onClickBaseCurrencyPicker = {
             converterState.currencyDropdownSelectedState.value = CurrencyDropdownState.BASE
             showBottomSheet = true
@@ -124,11 +124,11 @@ fun ConverterScreen(viewModel: MainViewModel) {
                                 with(converterState) {
                                     when (currencyDropdownSelectedState.value) {
                                         CurrencyDropdownState.BASE -> {
-                                            baseCurrency.value = it
+                                            baseCurrency.value = it.currencyCode
                                         }
 
                                         CurrencyDropdownState.CURRENT -> {
-                                            currentCurrency.value = it
+                                            currentCurrency.value = it.currencyCode
                                         }
                                     }
                                     baseCurrencyAmountSelector(baseCurrencyAmount.value)
@@ -152,8 +152,8 @@ fun ConverterContent(
     scope: CoroutineScope,
     bottomSheetState: SheetState,
     converterState: ConverterState,
-    baseCurrency: String,
-    currentCurrency: String,
+    baseCountryFlag: String,
+    currentCountryFlag: String,
     onClickBaseCurrencyPicker: () -> Unit,
     baseCurrencyAmountSelector: (String) -> Unit,
     onClickCurrentCurrencyPicker: () -> Unit,
@@ -168,7 +168,8 @@ fun ConverterContent(
             coroutineScope = scope,
             bottomSheetState = bottomSheetState,
             titleRes = R.string.from_currency,
-            currencyWithFlag = baseCurrency,
+            currencyCode = converterState.baseCurrency.value,
+            countryFlag = baseCountryFlag,
             currencyAmount = converterState.baseCurrencyAmount,
             currencyAmountSelector = baseCurrencyAmountSelector,
             onClickCurrencyPicker = onClickBaseCurrencyPicker,
@@ -198,7 +199,8 @@ fun ConverterContent(
             coroutineScope = scope,
             bottomSheetState = bottomSheetState,
             titleRes = R.string.from_currency,
-            currencyWithFlag = currentCurrency,
+            currencyCode = converterState.currentCurrency.value,
+            countryFlag = currentCountryFlag,
             currencyAmount = converterState.currentCurrencyAmount,
             currencyAmountSelector = currentCurrencyAmountSelector,
             onClickCurrencyPicker = onClickCurrentCurrencyPicker,
@@ -206,8 +208,20 @@ fun ConverterContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun ConverterScreenPreview() {
-//    ConverterScreen(viewModel)
+fun ConverterContentPreview() {
+    ConverterContent(
+        scope = rememberCoroutineScope(),
+        bottomSheetState = rememberModalBottomSheetState(),
+        converterState = rememberConverterState(),
+        baseCountryFlag = "",
+        currentCountryFlag = "",
+        onClickBaseCurrencyPicker = {},
+        baseCurrencyAmountSelector = {},
+        onClickCurrentCurrencyPicker = {},
+        currentCurrencyAmountSelector = {},
+        onClickCurrencySwap = {}
+    )
 }

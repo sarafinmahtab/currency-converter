@@ -1,6 +1,6 @@
 package com.sarafinmahtab.currencyconverter.data.source.remote
 
-import com.sarafinmahtab.currencyconverter.model.api.CurrencyRates
+import com.sarafinmahtab.currencyconverter.data.dto.api.CurrencyRatesDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,5 +15,5 @@ interface OpenExchangeAPIService {
     suspend fun getLatestRates(
         @Query("app_id") appId: String,
         @Query("base") base: String,
-    ): CurrencyRates
+    ): CurrencyRatesDto
 }

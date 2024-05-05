@@ -1,21 +1,18 @@
 package com.sarafinmahtab.currencyconverter.ui.main.currencies
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.sarafinmahtab.currencyconverter.ui.main.MainViewModel
+import com.sarafinmahtab.currencyconverter.ui.main.converter.CurrencyItem
 
 
 /*
@@ -24,7 +21,7 @@ import com.sarafinmahtab.currencyconverter.ui.main.MainViewModel
 
 @Composable
 fun CurrenciesScreen(viewModel: MainViewModel) {
-    val liveCurrencyWithFlagList by viewModel.liveCurrencyWithFlagList.collectAsState()
+    val liveCountryCurrencyList by viewModel.liveCountryCurrencies.collectAsState()
 
     Column(
         modifier = Modifier
@@ -33,17 +30,12 @@ fun CurrenciesScreen(viewModel: MainViewModel) {
             .wrapContentSize(Alignment.Center)
     ) {
         LazyColumn {
-            items(liveCurrencyWithFlagList) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { /* TODO */ }
-                        .padding(),
-                    text = it,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelMedium,
+            itemsIndexed(liveCountryCurrencyList) { index, countryCurrency ->
+                CurrencyItem(
+                    currency = countryCurrency,
+                    onSelectCurrency = {},
+                    showDivider = index < liveCountryCurrencyList.lastIndex,
                 )
-                HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
             }
         }
     }

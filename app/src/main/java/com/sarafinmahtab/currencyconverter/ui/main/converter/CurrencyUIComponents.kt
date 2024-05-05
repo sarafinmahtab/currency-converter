@@ -1,11 +1,14 @@
 package com.sarafinmahtab.currencyconverter.ui.main.converter
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
@@ -13,6 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
@@ -22,12 +26,14 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sarafinmahtab.currencyconverter.R
+import com.sarafinmahtab.currencyconverter.data.domain.CountryCurrency
 import com.sarafinmahtab.currencyconverter.ui.theme.stroke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -43,7 +49,8 @@ fun CurrencyPickerWithAmount(
     coroutineScope: CoroutineScope,
     bottomSheetState: SheetState,
     @StringRes titleRes: Int,
-    currencyWithFlag: String,
+    currencyCode: String,
+    countryFlag: String,
     currencyAmount: MutableState<String>,
     currencyAmountSelector: (String) -> Unit,
     onClickCurrencyPicker: () -> Unit,
@@ -82,7 +89,8 @@ fun CurrencyPickerWithAmount(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(0.7f),
-                currencyWithFlag = currencyWithFlag,
+                currencyCode = currencyCode,
+                countryFlag = countryFlag,
                 onClickSelector = {
                     coroutineScope.launch {
                         if (bottomSheetState.isVisible) {
@@ -107,7 +115,8 @@ fun CurrencyPickerWithAmountPreview() {
         coroutineScope = rememberCoroutineScope(),
         bottomSheetState = rememberModalBottomSheetState(),
         titleRes = R.string.from_currency,
-        currencyWithFlag = "USD",
+        currencyCode = "USD",
+        countryFlag = "USD",
         currencyAmount = remember { mutableStateOf(DEFAULT_BASE_CURRENCY_VALUE.toString()) },
         currencyAmountSelector = {},
         onClickCurrencyPicker = {},
@@ -116,29 +125,60 @@ fun CurrencyPickerWithAmountPreview() {
 
 @Composable
 fun DropdownCurrencyList(
-    currencies: List<String>,
-    onSelectCurrency: (String) -> Unit,
+    currencies: List<CountryCurrency>,
+    onSelectCurrency: (CountryCurrency) -> Unit,
 ) {
     LazyColumn {
-        items(currencies) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        onClick = {
-                            onSelectCurrency(
-                                it
-                                    .split(" ")
-                                    .last()
-                            )
-                        },
-                    )
-                    .padding(16.dp),
-                text = it,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.labelMedium
+        itemsIndexed(currencies) { index, currency ->
+            CurrencyItem(
+                currency = currency,
+                onSelectCurrency = onSelectCurrency,
+                showDivider = index < currencies.lastIndex,
             )
-            HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.stroke)
+        }
+    }
+}
+
+@Composable
+fun CurrencyItem(
+    currency: CountryCurrency,
+    onSelectCurrency: (CountryCurrency) -> Unit,
+    showDivider: Boolean,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { onSelectCurrency(currency) })
+    ) {
+        ListItem(
+            leadingContent = {
+                CountryFlag(
+                    modifier = Modifier.size(24.dp),
+                    flagBase64 = currency.flag,
+                )
+            },
+            headlineContent = {
+                Text(
+                    text = currency.currency,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.labelMedium
+                )
+            },
+            supportingContent = {
+                Text(
+                    text = currency.currencyCode,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            },
+        )
+
+        if (showDivider) {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 12.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.stroke,
+            )
         }
     }
 }
@@ -146,7 +186,8 @@ fun DropdownCurrencyList(
 @Composable
 fun CurrencySelector(
     modifier: Modifier = Modifier,
-    currencyWithFlag: String,
+    currencyCode: String,
+    countryFlag: String,
     onClickSelector: () -> Unit,
 ) {
     Row(
@@ -154,21 +195,58 @@ fun CurrencySelector(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
+        CountryFlag(
+            modifier = Modifier.size(24.dp),
+            flagBase64 = countryFlag,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = currencyWithFlag,
+            text = currencyCode,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
+        Spacer(modifier = Modifier.width(8.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_spinner_arrow),
-            contentDescription = currencyWithFlag
+            contentDescription = countryFlag
         )
     }
 }
 
+@Composable
+fun CountryFlag(
+    modifier: Modifier = Modifier,
+    flagBase64: String,
+) {
+    val pureBase64Encoded = flagBase64.substring(flagBase64.indexOf(",") + 1)
+    val imageData: ByteArray = Base64.decode(pureBase64Encoded, Base64.DEFAULT)
+    val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+
+    Image(
+        modifier = modifier,
+        bitmap = bitmap.asImageBitmap(),
+        contentDescription = "Country Flag",
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CurrencyItemPreview() {
+    CurrencyItem(
+        currency = CountryCurrency(
+            id = 18,
+            country = "Bangladesh",
+            currency = "Dollar",
+            currencyCode = "USD",
+            symbol = '$',
+            hasCurrencySymbol = true,
+            flag = "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw",
+        ), onSelectCurrency = { }, showDivider = false
+    )
+}
 
 @Preview(showBackground = true)
 @Composable
 fun CurrencySelectorPreview() {
-    CurrencySelector(currencyWithFlag = "USD") {}
+    CurrencySelector(currencyCode = "USD", countryFlag = "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw") {}
 }

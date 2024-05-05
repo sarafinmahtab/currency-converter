@@ -1,4 +1,4 @@
-package com.sarafinmahtab.currencyconverter.model.api
+package com.sarafinmahtab.currencyconverter.data.dto.api
 
 
 /*
@@ -185,10 +185,10 @@ package com.sarafinmahtab.currencyconverter.model.api
 }
 }
  */
-data class CurrencyRates(
+data class CurrencyRatesDto(
     val disclaimer: String? = null,
     val license: String? = null,
     val timestamp: Long = System.currentTimeMillis(),
     val base: String,
-    val rates: Map<String, Double>? = null
+    val rates: Map<String, Double>
 )
