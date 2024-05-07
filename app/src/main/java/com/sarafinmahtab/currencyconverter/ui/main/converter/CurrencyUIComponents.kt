@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sarafinmahtab.currencyconverter.R
 import com.sarafinmahtab.currencyconverter.data.domain.CountryCurrency
-import com.sarafinmahtab.currencyconverter.ui.theme.stroke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -63,7 +62,7 @@ fun CurrencyPickerWithAmount(
     Card(
         modifier = Modifier.padding(4.dp),
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.stroke),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         elevation = CardDefaults.elevatedCardElevation(4.dp),
     ) {
         Row(
@@ -177,7 +176,7 @@ fun CurrencyItem(
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.stroke,
+                color = MaterialTheme.colorScheme.outline,
             )
         }
     }

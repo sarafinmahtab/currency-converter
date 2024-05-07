@@ -8,11 +8,11 @@ import androidx.compose.ui.graphics.Color
  * @since 28/07/21
  */
 
-val ColorPrimaryLight = Color(0xFF1E88E5)
-val ColorPrimaryVariantLight = Color(0xFF1565C0)
+val ColorPrimaryLight = Color(red = 94, green = 53, blue = 177, alpha = 255)
+val ColorPrimaryContainerLight = Color(red = 69, green = 39, blue = 160, alpha = 255)
 val ColorOnPrimaryLight = Color.White
-val ColorSecondaryLight = Color(0xFF81D4FA)
-val ColorSecondaryVariantLight = Color(0xFF42A5F5)
+val ColorSecondaryLight = Color(0xFFEDE7F6)
+val ColorSecondaryContainerLight = Color(0xFFD1C4E9)
 val ColorOnSecondaryLight = Color.White
 val ColorSurfaceLight = Color(0xFFE3F2FD)
 val ColorOnSurfaceLight = Color.Black
@@ -31,5 +31,4 @@ val ColorOnSurfaceDark = Color.White
 val ColorBackgroundDark = Color(0xFF2F3031)
 val ColorOnBackgroundDark = Color.White
 
-val ColorScheme.stroke: Color get() = Color.LightGray
 val ColorScheme.light: Color get() = Color.LightGray
