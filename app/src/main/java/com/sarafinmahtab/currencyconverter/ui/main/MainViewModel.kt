@@ -57,8 +57,8 @@ class MainViewModel @Inject constructor(
 
                     val currenciesWithRates = _liveCountryCurrencies.value
                         .map {
-                            if (result.value.rates.containsKey(it.currencyCode)) {
-                                result.value.rates[it.currencyCode]?.let { rate ->
+                            if (result.value.rates.containsKey(it.code)) {
+                                result.value.rates[it.code]?.let { rate ->
                                     CountryCurrency(it, rate)
                                 } ?: CountryCurrency(it, -1.0)
                             } else {
@@ -80,7 +80,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getCurrencyFlag(currencyCode: String) = _liveCountryCurrencies.value.find {
-        it.currencyCode == currencyCode
+        it.code == currencyCode
     }?.flag ?: ""
 
     fun convertCurrency(

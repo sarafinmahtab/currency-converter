@@ -88,8 +88,8 @@ fun CurrencyPickerWithAmount(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(0.7f),
-                currencyCode = currencyCode,
-                countryFlag = countryFlag,
+                code = currencyCode,
+                flag = countryFlag,
                 onClickSelector = {
                     coroutineScope.launch {
                         if (bottomSheetState.isVisible) {
@@ -158,14 +158,14 @@ fun CurrencyItem(
             },
             headlineContent = {
                 Text(
-                    text = currency.currency,
+                    text = currency.formattedName(),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelMedium
                 )
             },
             supportingContent = {
                 Text(
-                    text = currency.currencyCode,
+                    text = currency.code,
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -185,8 +185,8 @@ fun CurrencyItem(
 @Composable
 fun CurrencySelector(
     modifier: Modifier = Modifier,
-    currencyCode: String,
-    countryFlag: String,
+    code: String,
+    flag: String,
     onClickSelector: () -> Unit,
 ) {
     Row(
@@ -196,18 +196,18 @@ fun CurrencySelector(
     ) {
         CountryFlag(
             modifier = Modifier.size(24.dp),
-            flagBase64 = countryFlag,
+            flagBase64 = flag,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = currencyCode,
+            text = code,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_spinner_arrow),
-            contentDescription = countryFlag
+            contentDescription = flag
         )
     }
 }
@@ -233,19 +233,22 @@ fun CountryFlag(
 fun CurrencyItemPreview() {
     CurrencyItem(
         currency = CountryCurrency(
-            id = 18,
-            country = "Bangladesh",
-            currency = "Dollar",
-            currencyCode = "USD",
-            symbol = '$',
-            hasCurrencySymbol = true,
-            flag = "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw",
-        ), onSelectCurrency = { }, showDivider = false
+            code = "AED",
+            name = "UAE Dirham",
+            country = "United Arab Emirates",
+            countryCode = "AE",
+            flag = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAG5SURBVHja7JdLihRBEEBfVqUU6rQNggiCFxA8gswFRNy49gAeQdx4G8HbuHDvRkRUnKxPZ2dGhous6Y9TtavPZmITtYggXsWPSKOqrCkFK8stgAFKoOr1kiKAt8CD76/f/KYYj//u7bPpU28Mn199eGiBLabg7uWLUePLp08mB/j66xvA1gKVSkK9J/29guuxNCZrVX60905qZlD0xvd5XbPvmN22uo+XCFDZXI2Idjt0txuk9TFM+ve7Yk9MAkAPIKSuI3XdoEMX/aQAd4qSfYpHAI0RbVt0FGA/KYAtyvMMaBTUObRpBh2a0E3cgspewkkJQkDqGm3bQfNPL9/PtIQ+cmjC5OqbTaj9qppRcglCAFej3h9H8P9xnBUgCtRNBllYDj0QmxbWAkgxggiktFjg60PosAeMJnQtAIkRq7poBlIfK5cgRBQdzYC1dtLgVVVRluUJgEQo7XH0RminlBDCKUDK99AIwByXs4gcb0JJafaFc7aCjTlktQBIqpiVAPIYas5AcXEx6LCRzaxjKAn4465GjZ1zs13GBngMPAceLbyFfwJfTP8m2PR6SfGAM7eP07UB/g0Aw73uXdMbeJMAAAAASUVORK5CYII=",
+        ),
+        onSelectCurrency = {},
+        showDivider = false,
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun CurrencySelectorPreview() {
-    CurrencySelector(currencyCode = "USD", countryFlag = "iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw") {}
+    CurrencySelector(
+        code = "AED",
+        flag = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAG5SURBVHja7JdLihRBEEBfVqUU6rQNggiCFxA8gswFRNy49gAeQdx4G8HbuHDvRkRUnKxPZ2dGhous6Y9TtavPZmITtYggXsWPSKOqrCkFK8stgAFKoOr1kiKAt8CD76/f/KYYj//u7bPpU28Mn199eGiBLabg7uWLUePLp08mB/j66xvA1gKVSkK9J/29guuxNCZrVX60905qZlD0xvd5XbPvmN22uo+XCFDZXI2Idjt0txuk9TFM+ve7Yk9MAkAPIKSuI3XdoEMX/aQAd4qSfYpHAI0RbVt0FGA/KYAtyvMMaBTUObRpBh2a0E3cgspewkkJQkDqGm3bQfNPL9/PtIQ+cmjC5OqbTaj9qppRcglCAFej3h9H8P9xnBUgCtRNBllYDj0QmxbWAkgxggiktFjg60PosAeMJnQtAIkRq7poBlIfK5cgRBQdzYC1dtLgVVVRluUJgEQo7XH0RminlBDCKUDK99AIwByXs4gcb0JJafaFc7aCjTlktQBIqpiVAPIYas5AcXEx6LCRzaxjKAn4465GjZ1zs13GBngMPAceLbyFfwJfTP8m2PR6SfGAM7eP07UB/g0Aw73uXdMbeJMAAAAASUVORK5CYII=",
+    ) {}
 }

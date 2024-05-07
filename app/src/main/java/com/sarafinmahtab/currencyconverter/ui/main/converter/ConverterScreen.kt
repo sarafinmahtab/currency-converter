@@ -124,11 +124,11 @@ fun ConverterScreen(viewModel: MainViewModel) {
                                 with(converterState) {
                                     when (currencyDropdownSelectedState.value) {
                                         CurrencyDropdownState.BASE -> {
-                                            baseCurrency.value = it.currencyCode
+                                            baseCurrency.value = it.code
                                         }
 
                                         CurrencyDropdownState.CURRENT -> {
-                                            currentCurrency.value = it.currencyCode
+                                            currentCurrency.value = it.code
                                         }
                                     }
                                     baseCurrencyAmountSelector(baseCurrencyAmount.value)
