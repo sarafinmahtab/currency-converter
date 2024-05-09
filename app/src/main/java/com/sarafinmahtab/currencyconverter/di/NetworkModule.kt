@@ -1,8 +1,8 @@
 package com.sarafinmahtab.currencyconverter.di
 
 import android.content.Context
-import com.sarafinmahtab.currencyconverter.BuildConfig
 import com.google.gson.GsonBuilder
+import com.sarafinmahtab.currencyconverter.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

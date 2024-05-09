@@ -25,8 +25,28 @@ fun rememberConverterState(
     baseCurrency: MutableState<String> = remember { mutableStateOf(DEFAULT_BASE_CURRENCY) },
     baseCurrencyAmount: MutableState<String> = remember { mutableStateOf(DEFAULT_BASE_CURRENCY_VALUE.toString()) },
     currentCurrency: MutableState<String> = remember { mutableStateOf(DEFAULT_CURRENT_CURRENCY) },
-    currentCurrencyAmount: MutableState<String> = remember { mutableStateOf(DEFAULT_CURRENT_CURRENCY_VALUE.toString()) },
-    currencyDropdownSelectedState: MutableState<Int> = remember { mutableIntStateOf(CurrencyDropdownState.NONE) },
-) = remember(baseCurrency, baseCurrencyAmount, currentCurrency, currentCurrencyAmount, currencyDropdownSelectedState) {
-    ConverterState(baseCurrency, baseCurrencyAmount, currentCurrency, currentCurrencyAmount, currencyDropdownSelectedState)
+    currentCurrencyAmount: MutableState<String> = remember {
+        mutableStateOf(
+            DEFAULT_CURRENT_CURRENCY_VALUE.toString()
+        )
+    },
+    currencyDropdownSelectedState: MutableState<Int> = remember {
+        mutableIntStateOf(
+            CurrencyDropdownState.NONE
+        )
+    },
+) = remember(
+    baseCurrency,
+    baseCurrencyAmount,
+    currentCurrency,
+    currentCurrencyAmount,
+    currencyDropdownSelectedState
+) {
+    ConverterState(
+        baseCurrency,
+        baseCurrencyAmount,
+        currentCurrency,
+        currentCurrencyAmount,
+        currencyDropdownSelectedState
+    )
 }

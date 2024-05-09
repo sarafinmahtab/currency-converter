@@ -1,16 +1,15 @@
 package com.sarafinmahtab.currencyconverter.ui.main.currencies
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.sarafinmahtab.currencyconverter.ui.main.MainViewModel
 import com.sarafinmahtab.currencyconverter.ui.main.converter.CurrencyItem
 
@@ -21,8 +20,6 @@ import com.sarafinmahtab.currencyconverter.ui.main.converter.CurrencyItem
 
 @Composable
 fun CurrenciesScreen(viewModel: MainViewModel) {
-    val liveCountryCurrencyList by viewModel.liveCountryCurrencies.collectAsState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,19 +27,13 @@ fun CurrenciesScreen(viewModel: MainViewModel) {
             .wrapContentSize(Alignment.Center)
     ) {
         LazyColumn {
-            itemsIndexed(liveCountryCurrencyList) { index, countryCurrency ->
+            itemsIndexed(viewModel.countryCurrencyList) { index, countryCurrency ->
                 CurrencyItem(
                     currency = countryCurrency,
                     onSelectCurrency = {},
-                    showDivider = index < liveCountryCurrencyList.lastIndex,
+                    showDivider = index < viewModel.countryCurrencyList.lastIndex,
                 )
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CurrenciesScreenPreview() {
-//    CurrenciesScreen(mainViewModel)
 }

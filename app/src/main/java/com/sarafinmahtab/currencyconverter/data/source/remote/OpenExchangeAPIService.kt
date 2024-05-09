@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface OpenExchangeAPIService {
 
     @GET("latest.json")
-    suspend fun getLatestRates(
+    suspend fun fetchLatestCurrencyRates(
         @Query("app_id") appId: String,
         @Query("base") base: String,
     ): CurrencyRatesDto

@@ -12,13 +12,13 @@ import javax.inject.Inject
  */
 
 interface CurrencyRepository {
-    suspend fun getLatestRates(base: String): Results<CurrencyRatesDto>
+    suspend fun fetchLatestCurrencyRates(base: String): Results<CurrencyRatesDto>
 }
 
 @ActivityRetainedScoped
 class CurrencyRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
 ) : CurrencyRepository {
-    override suspend fun getLatestRates(base: String): Results<CurrencyRatesDto> =
-        remoteDataSource.getLatestRates(base)
+    override suspend fun fetchLatestCurrencyRates(base: String): Results<CurrencyRatesDto> =
+        remoteDataSource.fetchLatestCurrencyRates(base)
 }

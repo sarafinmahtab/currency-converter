@@ -4,14 +4,14 @@ import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.core.helpers.Results
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.sarafinmahtab.currencyconverter.R
+import com.sarafinmahtab.currencyconverter.data.domain.CountryCurrency
+import com.sarafinmahtab.currencyconverter.data.domain.DefaultBaseCurrencyCode
 import com.sarafinmahtab.currencyconverter.data.dto.local.CountryCurrencyDto
 import com.sarafinmahtab.currencyconverter.data.repository.CurrencyRepository
 import com.sarafinmahtab.currencyconverter.helper.getJsonFromRawResource
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.sarafinmahtab.currencyconverter.data.domain.CountryCurrency
-import com.sarafinmahtab.currencyconverter.data.domain.DefaultBaseCurrencyCode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,11 +32,15 @@ class MainViewModel @Inject constructor(
 
     private val _currencyRates = MutableStateFlow(mapOf<String, Double>())
 
-    private val _liveCountryCurrencies = MutableStateFlow<List<CountryCurrency>>(emptyList())
-    val liveCountryCurrencies: StateFlow<List<CountryCurrency>> = _liveCountryCurrencies
+    private val _currencyRatesUIState =
+        MutableStateFlow<CurrencyRatesUIState>(CurrencyRatesUIState.Idle)
+    val currencyRatesUIState: StateFlow<CurrencyRatesUIState> = _currencyRatesUIState
 
-    private val _initialLoading = MutableStateFlow(true)
-    val initialLoading: StateFlow<Boolean> = _initialLoading
+    val countryCurrencyList = ArrayList<CountryCurrency>()
+
+    init {
+        _currencyRatesUIState.update { CurrencyRatesUIState.Loading }
+    }
 
     fun loadCountriesInfo(resources: Resources) {
         viewModelScope.launch(Dispatchers.Default) {
@@ -45,17 +49,16 @@ class MainViewModel @Inject constructor(
                 countryCurrenciesJson, object : TypeToken<ArrayList<CountryCurrencyDto>>() {}.type
             )).map { it.mapToDomain() }
 
-            _liveCountryCurrencies.update { countryCurrencies }
+            countryCurrencyList += countryCurrencies
         }
     }
 
-    fun getLatestRates() {
-        viewModelScope.launch {
-            when (val result = currencyRepository.getLatestRates(DefaultBaseCurrencyCode)) {
+    fun fetchLatestCurrencyRates() {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result =
+                currencyRepository.fetchLatestCurrencyRates(DefaultBaseCurrencyCode)) {
                 is Results.Success -> {
-                    _initialLoading.update { false }
-
-                    val currenciesWithRates = _liveCountryCurrencies.value
+                    val currenciesWithRates = countryCurrencyList
                         .map {
                             if (result.value.rates.containsKey(it.code)) {
                                 result.value.rates[it.code]?.let { rate ->
@@ -67,19 +70,19 @@ class MainViewModel @Inject constructor(
                         }
                         .filter { it.currentRateByBase != -1.0 }
 
-                    _liveCountryCurrencies.update { currenciesWithRates }
+                    countryCurrencyList += currenciesWithRates
+                    _currencyRatesUIState.update { CurrencyRatesUIState.Success(currenciesWithRates) }
                     _currencyRates.update { result.value.rates }
                 }
 
                 is Results.Failure -> {
-                    _initialLoading.update { false }
-                    _liveCountryCurrencies.update { emptyList() }
+                    _currencyRatesUIState.update { CurrencyRatesUIState.Failure(result.throwable.toString()) }
                 }
             }
         }
     }
 
-    fun getCurrencyFlag(currencyCode: String) = _liveCountryCurrencies.value.find {
+    fun getCurrencyFlag(currencyCode: String) = countryCurrencyList.find {
         it.code == currencyCode
     }?.flag ?: ""
 
@@ -95,11 +98,24 @@ class MainViewModel @Inject constructor(
                 val rateForCurrentCurrency = _currencyRates.value[currentCurrency] ?: 1.0
 
                 convertedCurrencyAmount(
-                    (baseCurrencyValue.toDouble().times(rateForCurrentCurrency / rateForBaseCurrency).toString())
+                    (baseCurrencyValue.toDouble()
+                        .times(rateForCurrentCurrency / rateForBaseCurrency).toString())
                 )
             } else {
                 convertedCurrencyAmount((0.0).toString())
             }
         }
     }
+}
+
+sealed class CurrencyRatesUIState {
+    data object Idle : CurrencyRatesUIState()
+    data object Loading : CurrencyRatesUIState()
+    data class Success(
+        val countryCurrencyRates: List<CountryCurrency>
+    ) : CurrencyRatesUIState()
+
+    data class Failure(
+        val error: String
+    ) : CurrencyRatesUIState()
 }

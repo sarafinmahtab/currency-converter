@@ -4,8 +4,6 @@ import com.android.core.helpers.Results
 import com.sarafinmahtab.currencyconverter.BuildConfig
 import com.sarafinmahtab.currencyconverter.data.dto.api.CurrencyRatesDto
 import com.sarafinmahtab.currencyconverter.helper.APIResolver
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,7 +13,7 @@ import javax.inject.Singleton
  */
 
 interface RemoteDataSource {
-    suspend fun getLatestRates(base: String): Results<CurrencyRatesDto>
+    suspend fun fetchLatestCurrencyRates(base: String): Results<CurrencyRatesDto>
 }
 
 @Singleton
@@ -23,11 +21,10 @@ class RemoteDataSourceImpl @Inject constructor(
     private val openExchangeAPIService: OpenExchangeAPIService,
     private val apiResolver: APIResolver,
 ) : RemoteDataSource {
-    override suspend fun getLatestRates(
+    override suspend fun fetchLatestCurrencyRates(
         base: String,
-    ): Results<CurrencyRatesDto> = withContext(Dispatchers.IO) {
-        return@withContext apiResolver.resolve("CurrencyRepositoryImpl->convertCurrency") {
-            openExchangeAPIService.getLatestRates(BuildConfig.OPEN_EXCHANGE_APP_ID, base)
+    ): Results<CurrencyRatesDto> =
+        apiResolver.resolve("CurrencyRepositoryImpl->fetchLatestCurrencyRates") {
+            openExchangeAPIService.fetchLatestCurrencyRates(BuildConfig.OPEN_EXCHANGE_APP_ID, base)
         }
-    }
 }
