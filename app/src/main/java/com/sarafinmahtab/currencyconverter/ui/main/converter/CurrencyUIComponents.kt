@@ -221,7 +221,7 @@ fun CurrencySelector(
         Spacer(modifier = Modifier.width(8.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_spinner_arrow),
-            contentDescription = flag
+            contentDescription = "Select Country"
         )
     }
 }

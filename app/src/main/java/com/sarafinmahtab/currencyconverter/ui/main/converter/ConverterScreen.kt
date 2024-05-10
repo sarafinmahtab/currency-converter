@@ -7,11 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -32,6 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sarafinmahtab.currencyconverter.R
+import com.sarafinmahtab.currencyconverter.ui.components.ShimmerAnimation
+import com.sarafinmahtab.currencyconverter.ui.components.ShimmerType
 import com.sarafinmahtab.currencyconverter.ui.main.CurrencyRatesUIState
 import com.sarafinmahtab.currencyconverter.ui.main.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -89,16 +88,10 @@ fun ConverterScreen(viewModel: MainViewModel) {
     when (currencyRatesUIState) {
         CurrencyRatesUIState.Idle -> {}
         CurrencyRatesUIState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    strokeWidth = 2.dp,
-                )
-            }
+            ShimmerConverterContent(
+                baseCountryCode = converterState.baseCurrency.value,
+                currentCountryCode = converterState.currentCurrency.value,
+            )
         }
 
         is CurrencyRatesUIState.Success -> {
@@ -174,6 +167,50 @@ fun ConverterScreen(viewModel: MainViewModel) {
         }
 
         is CurrencyRatesUIState.Failure -> {}
+    }
+}
+
+@Composable
+fun ShimmerConverterContent(
+    baseCountryCode: String,
+    currentCountryCode: String,
+) {
+    Column(
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Spacer(modifier = Modifier.padding(25.dp))
+        ShimmerAnimation(
+            shimmerType = ShimmerType.CurrencyPickerWithAmount(
+                titleRes = R.string.from_currency,
+                code = baseCountryCode,
+            )
+        )
+        Spacer(modifier = Modifier.padding(4.dp))
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_swap_currency),
+                    contentDescription = stringResource(R.string.swap_currency),
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
+                    text = stringResource(id = R.string.swap_currency),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+        }
+        Spacer(modifier = Modifier.padding(4.dp))
+        ShimmerAnimation(
+            shimmerType = ShimmerType.CurrencyPickerWithAmount(
+                titleRes = R.string.from_currency,
+                code = currentCountryCode,
+            )
+        )
     }
 }
 
