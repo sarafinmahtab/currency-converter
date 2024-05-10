@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 
 
 /*
@@ -22,15 +23,15 @@ data class ConverterState(
 
 @Composable
 fun rememberConverterState(
-    baseCurrency: MutableState<String> = remember { mutableStateOf(DEFAULT_BASE_CURRENCY) },
-    baseCurrencyAmount: MutableState<String> = remember { mutableStateOf(DEFAULT_BASE_CURRENCY_VALUE.toString()) },
-    currentCurrency: MutableState<String> = remember { mutableStateOf(DEFAULT_CURRENT_CURRENCY) },
-    currentCurrencyAmount: MutableState<String> = remember {
+    baseCurrency: MutableState<String> = rememberSaveable { mutableStateOf(DEFAULT_BASE_CURRENCY) },
+    baseCurrencyAmount: MutableState<String> = rememberSaveable { mutableStateOf(DEFAULT_BASE_CURRENCY_VALUE.toString()) },
+    currentCurrency: MutableState<String> = rememberSaveable { mutableStateOf(DEFAULT_CURRENT_CURRENCY) },
+    currentCurrencyAmount: MutableState<String> = rememberSaveable {
         mutableStateOf(
             DEFAULT_CURRENT_CURRENCY_VALUE.toString()
         )
     },
-    currencyDropdownSelectedState: MutableState<Int> = remember {
+    currencyDropdownSelectedState: MutableState<Int> = rememberSaveable {
         mutableIntStateOf(
             CurrencyDropdownState.NONE
         )
