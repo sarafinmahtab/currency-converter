@@ -14,9 +14,9 @@ val ColorOnPrimaryLight = Color.White
 val ColorSecondaryLight = Color(0xFFEDE7F6)
 val ColorSecondaryContainerLight = Color(0xFFD1C4E9)
 val ColorOnSecondaryLight = Color.White
-val ColorSurfaceLight = Color(0xFFE3F2FD)
+val ColorSurfaceLight = Color.White
 val ColorOnSurfaceLight = Color.Black
-val ColorBackgroundLight = Color.White
+val ColorBackgroundLight = Color(0xFFE3F2FD)
 val ColorOnBackgroundLight = Color.DarkGray
 
 

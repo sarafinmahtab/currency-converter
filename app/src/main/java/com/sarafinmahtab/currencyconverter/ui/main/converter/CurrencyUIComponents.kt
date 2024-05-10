@@ -5,6 +5,7 @@ import android.util.Base64
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -74,7 +75,9 @@ fun CurrencyPickerWithAmount(
         style = MaterialTheme.typography.labelMedium,
     )
     Card(
-        modifier = Modifier.padding(4.dp),
+        modifier = Modifier
+            .padding(4.dp)
+            .background(MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         elevation = CardDefaults.elevatedCardElevation(4.dp),
@@ -161,6 +164,7 @@ fun CurrencyItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
             .clickable(onClick = { onSelectCurrency(currency) })
     ) {
         ListItem(

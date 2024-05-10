@@ -87,7 +87,7 @@ fun TopBar() {
                         onClick = { /* TODO */ }
                     )
             )
-        }
+        },
     )
 }
 
